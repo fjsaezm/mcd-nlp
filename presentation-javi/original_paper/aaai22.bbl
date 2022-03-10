@@ -1,0 +1,277 @@
+\begin{thebibliography}{43}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Alzantot et~al.(2018)Alzantot, Sharma, Elgohary, Ho, Srivastava, and
+  Chang}]{alzantot2018generating}
+Alzantot, M.; Sharma, Y.; Elgohary, A.; Ho, B.-J.; Srivastava, M.; and Chang,
+  K.-W. 2018.
+\newblock Generating natural language adversarial examples.
+\newblock \emph{arXiv preprint arXiv:1804.07998}.
+
+\bibitem[{Bahdanau, Cho, and Bengio(2015)}]{Bahdanau2015}
+Bahdanau, D.; Cho, K.; and Bengio, Y. 2015.
+\newblock {Neural Machine Translation by Jointly Learning to Align and
+  Translate}.
+\newblock In \emph{iclr}.
+
+\bibitem[{Bengio, Ducharme, and Vincent(2003)}]{Bengio2003nnlm}
+Bengio, Y.; Ducharme, R.; and Vincent, P. 2003.
+\newblock {A Neural Probabilistic Language Model}.
+\newblock \emph{The Journal of Machine Learning Research}, 3: 1137--1155.
+
+\bibitem[{Chen et~al.(2020)Chen, Kornblith, Norouzi, and
+  Hinton}]{chen2020simple}
+Chen, T.; Kornblith, S.; Norouzi, M.; and Hinton, G. 2020.
+\newblock A simple framework for contrastive learning of visual
+  representations.
+\newblock In \emph{International conference on machine learning}, 1597--1607.
+  PMLR.
+
+\bibitem[{Chen et~al.(2021)Chen, Xie, Bi, Ye, Deng, Zhang, and
+  Chen}]{chen2021disentangled}
+Chen, X.; Xie, X.; Bi, Z.; Ye, H.; Deng, S.; Zhang, N.; and Chen, H. 2021.
+\newblock Disentangled Contrastive Learning for Learning Robust Textual
+  Representations.
+\newblock \emph{arXiv preprint arXiv:2104.04907}.
+
+\bibitem[{Cheng, Jiang, and Macherey(2019)}]{cheng2019robust}
+Cheng, Y.; Jiang, L.; and Macherey, W. 2019.
+\newblock Robust neural machine translation with doubly adversarial inputs.
+\newblock \emph{arXiv preprint arXiv:1906.02443}.
+
+\bibitem[{Cheng et~al.(2018)Cheng, Tu, Meng, Zhai, and Liu}]{cheng2018towards}
+Cheng, Y.; Tu, Z.; Meng, F.; Zhai, J.; and Liu, Y. 2018.
+\newblock Towards robust neural machine translation.
+\newblock \emph{arXiv preprint arXiv:1805.06130}.
+
+\bibitem[{Chopra, Hadsell, and LeCun(2005)}]{chopra2005learning}
+Chopra, S.; Hadsell, R.; and LeCun, Y. 2005.
+\newblock Learning a similarity metric discriminatively, with application to
+  face verification.
+\newblock In \emph{2005 IEEE Computer Society Conference on Computer Vision and
+  Pattern Recognition (CVPR'05)}, volume~1, 539--546. IEEE.
+
+\bibitem[{Dong et~al.(2018)Dong, Liao, Pang, Su, Zhu, Hu, and
+  Li}]{dong2018boosting}
+Dong, Y.; Liao, F.; Pang, T.; Su, H.; Zhu, J.; Hu, X.; and Li, J. 2018.
+\newblock Boosting adversarial attacks with momentum.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, 9185--9193.
+
+\bibitem[{Duan et~al.(2019)Duan, Yu, Yin, Zhang, Luo, and
+  Zhang}]{duan2019contrastive}
+Duan, X.; Yu, H.; Yin, M.; Zhang, M.; Luo, W.; and Zhang, Y. 2019.
+\newblock Contrastive attention mechanism for abstractive sentence
+  summarization.
+\newblock \emph{arXiv preprint arXiv:1910.13114}.
+
+\bibitem[{Ebrahimi, Lowd, and Dou(2018)}]{ebrahimi2018adversarial}
+Ebrahimi, J.; Lowd, D.; and Dou, D. 2018.
+\newblock On adversarial examples for character-level neural machine
+  translation.
+\newblock \emph{arXiv preprint arXiv:1806.09030}.
+
+\bibitem[{Garg and Ramakrishnan(2020)}]{garg2020bae}
+Garg, S.; and Ramakrishnan, G. 2020.
+\newblock Bae: Bert-based adversarial examples for text classification.
+\newblock \emph{arXiv preprint arXiv:2004.01970}.
+
+\bibitem[{Giorgi et~al.(2020)Giorgi, Nitski, Bader, and
+  Wang}]{giorgi2020declutr}
+Giorgi, J.~M.; Nitski, O.; Bader, G.~D.; and Wang, B. 2020.
+\newblock Declutr: Deep contrastive learning for unsupervised textual
+  representations.
+\newblock \emph{arXiv preprint arXiv:2006.03659}.
+
+\bibitem[{Goodfellow, Shlens, and Szegedy(2014)}]{goodfellow2014explaining}
+Goodfellow, I.~J.; Shlens, J.; and Szegedy, C. 2014.
+\newblock Explaining and harnessing adversarial examples.
+\newblock \emph{arXiv preprint arXiv:1412.6572}.
+
+\bibitem[{Hahn and Choi(2019)}]{hahn-choi-2019-self}
+Hahn, S.; and Choi, H. 2019.
+\newblock Self-Knowledge Distillation in Natural Language Processing.
+\newblock In \emph{Proceedings of the International Conference on Recent
+  Advances in Natural Language Processing (RANLP 2019)}, 423--430. Varna,
+  Bulgaria: INCOMA Ltd.
+
+\bibitem[{He et~al.(2020)He, Fan, Wu, Xie, and Girshick}]{he2020momentum}
+He, K.; Fan, H.; Wu, Y.; Xie, S.; and Girshick, R. 2020.
+\newblock Momentum contrast for unsupervised visual representation learning.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}, 9729--9738.
+
+\bibitem[{Henaff(2020)}]{henaff2020data}
+Henaff, O. 2020.
+\newblock Data-efficient image recognition with contrastive predictive coding.
+\newblock In \emph{International Conference on Machine Learning}, 4182--4192.
+  PMLR.
+
+\bibitem[{Hjelm et~al.(2018)Hjelm, Fedorov, Lavoie-Marchildon, Grewal, Bachman,
+  Trischler, and Bengio}]{hjelm2018learning}
+Hjelm, R.~D.; Fedorov, A.; Lavoie-Marchildon, S.; Grewal, K.; Bachman, P.;
+  Trischler, A.; and Bengio, Y. 2018.
+\newblock Learning deep representations by mutual information estimation and
+  maximization.
+\newblock \emph{arXiv preprint arXiv:1808.06670}.
+
+\bibitem[{Jaiswal et~al.(2021)Jaiswal, Babu, Zadeh, Banerjee, and
+  Makedon}]{jaiswal2021survey}
+Jaiswal, A.; Babu, A.~R.; Zadeh, M.~Z.; Banerjee, D.; and Makedon, F. 2021.
+\newblock A survey on contrastive self-supervised learning.
+\newblock \emph{Technologies}, 9(1): 2.
+
+\bibitem[{Jin et~al.(2020)Jin, Jin, Zhou, and Szolovits}]{jin2020bert}
+Jin, D.; Jin, Z.; Zhou, J.~T.; and Szolovits, P. 2020.
+\newblock Is bert really robust? a strong baseline for natural language attack
+  on text classification and entailment.
+\newblock In \emph{Proceedings of the AAAI conference on artificial
+  intelligence}, volume~34, 8018--8025.
+
+\bibitem[{Khosla et~al.(2020)Khosla, Teterwak, Wang, Sarna, Tian, Isola,
+  Maschinot, Liu, and Krishnan}]{khosla2020supervised}
+Khosla, P.; Teterwak, P.; Wang, C.; Sarna, A.; Tian, Y.; Isola, P.; Maschinot,
+  A.; Liu, C.; and Krishnan, D. 2020.
+\newblock Supervised contrastive learning.
+\newblock \emph{arXiv preprint arXiv:2004.11362}.
+
+\bibitem[{Kim(2014)}]{kim2014convolutional}
+Kim, Y. 2014.
+\newblock Convolutional neural networks for sentence classification. EMNLP.
+
+\bibitem[{Kurakin et~al.(2016)Kurakin, Goodfellow, Bengio
+  et~al.}]{kurakin2016adversarial}
+Kurakin, A.; Goodfellow, I.; Bengio, S.; et~al. 2016.
+\newblock Adversarial examples in the physical world.
+
+\bibitem[{Logeswaran and Lee(2018)}]{logeswaran2018efficient}
+Logeswaran, L.; and Lee, H. 2018.
+\newblock An efficient framework for learning sentence representations.
+\newblock \emph{arXiv preprint arXiv:1803.02893}.
+
+\bibitem[{Ma et~al.(2019)Ma, Zhang, Zhang, Duan, Hou, Zhou, and
+  Song}]{ma2019tensorized}
+Ma, X.; Zhang, P.; Zhang, S.; Duan, N.; Hou, Y.; Zhou, M.; and Song, D. 2019.
+\newblock A tensorized transformer for language modeling.
+\newblock \emph{Advances in Neural Information Processing Systems}, 32:
+  2232--2242.
+
+\bibitem[{Merity et~al.(2016)Merity, Xiong, Bradbury, and
+  Socher}]{merity2016pointer}
+Merity, S.; Xiong, C.; Bradbury, J.; and Socher, R. 2016.
+\newblock Pointer sentinel mixture models.
+\newblock \emph{arXiv preprint arXiv:1609.07843}.
+
+\bibitem[{Mikolov et~al.(2011)Mikolov, Deoras, Kombrink, Burget, and
+  {\v{C}}ernock{\`y}}]{mikolov2011empirical}
+Mikolov, T.; Deoras, A.; Kombrink, S.; Burget, L.; and {\v{C}}ernock{\`y}, J.
+  2011.
+\newblock Empirical evaluation and combination of advanced language modeling
+  techniques.
+\newblock In \emph{Twelfth annual conference of the international speech
+  communication association}.
+
+\bibitem[{Mikolov et~al.(2010)Mikolov, Karafiat, Burget, Cernocky, and
+  Khudanpur}]{Mikolov2010}
+Mikolov, T.; Karafiat, M.; Burget, L.; Cernocky, J.; and Khudanpur, S. 2010.
+\newblock Recurrent neural network based language model.
+\newblock In \emph{INTERSPEECH 2010, 11th Annual Conference of the
+  International Speech Communication Association}, 1045--1048.
+
+\bibitem[{Miyato, Dai, and Goodfellow(2016)}]{miyato2016adversarial}
+Miyato, T.; Dai, A.~M.; and Goodfellow, I. 2016.
+\newblock Adversarial training methods for semi-supervised text classification.
+\newblock \emph{arXiv preprint arXiv:1605.07725}.
+
+\bibitem[{Moosavi-Dezfooli, Fawzi, and Frossard(2016)}]{moosavi2016deepfool}
+Moosavi-Dezfooli, S.-M.; Fawzi, A.; and Frossard, P. 2016.
+\newblock Deepfool: a simple and accurate method to fool deep neural networks.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, 2574--2582.
+
+\bibitem[{Morris(2020)}]{morris2020second}
+Morris, J.~X. 2020.
+\newblock Second-Order NLP Adversarial Examples.
+\newblock \emph{arXiv preprint arXiv:2010.01770}.
+
+\bibitem[{Papernot et~al.(2016)Papernot, McDaniel, Jha, Fredrikson, Celik, and
+  Swami}]{papernot2016limitations}
+Papernot, N.; McDaniel, P.; Jha, S.; Fredrikson, M.; Celik, Z.~B.; and Swami,
+  A. 2016.
+\newblock The limitations of deep learning in adversarial settings.
+\newblock In \emph{2016 IEEE European symposium on security and privacy
+  (EuroS\&P)}, 372--387. IEEE.
+
+\bibitem[{Pappas and Henderson(2019)}]{pappas2019gile}
+Pappas, N.; and Henderson, J. 2019.
+\newblock Gile: A generalized input-label embedding for text classification.
+\newblock \emph{Transactions of the Association for Computational Linguistics},
+  7: 139--155.
+
+\bibitem[{Ren et~al.(2019)Ren, Deng, He, and Che}]{ren2019generating}
+Ren, S.; Deng, Y.; He, K.; and Che, W. 2019.
+\newblock Generating natural language adversarial examples through probability
+  weighted word saliency.
+\newblock In \emph{Proceedings of the 57th annual meeting of the association
+  for computational linguistics}, 1085--1097.
+
+\bibitem[{Rethmeier and Augenstein(2020)}]{rethmeier2020long}
+Rethmeier, N.; and Augenstein, I. 2020.
+\newblock Long-tail zero and few-shot learning via contrastive pretraining on
+  and for small data.
+\newblock \emph{arXiv e-prints}, arXiv--2010.
+
+\bibitem[{Rethmeier and Augenstein(2021)}]{rethmeier2021primer}
+Rethmeier, N.; and Augenstein, I. 2021.
+\newblock A Primer on Contrastive Pretraining in Language Processing: Methods,
+  Lessons Learned and Perspectives.
+\newblock \emph{arXiv preprint arXiv:2102.12982}.
+
+\bibitem[{Sennrich, Haddow, and Birch(2015)}]{sennrich2015neural}
+Sennrich, R.; Haddow, B.; and Birch, A. 2015.
+\newblock Neural machine translation of rare words with subword units.
+\newblock \emph{arXiv preprint arXiv:1508.07909}.
+
+\bibitem[{Sutskever, Vinyals, and Le(2014)}]{Sutskever2014}
+Sutskever, I.; Vinyals, O.; and Le, Q.~V. 2014.
+\newblock {Sequence to Sequence Learning with Neural Networks}.
+\newblock In \emph{nips}.
+
+\bibitem[{Szegedy et~al.(2013)Szegedy, Zaremba, Sutskever, Bruna, Erhan,
+  Goodfellow, and Fergus}]{szegedy2013intriguing}
+Szegedy, C.; Zaremba, W.; Sutskever, I.; Bruna, J.; Erhan, D.; Goodfellow, I.;
+  and Fergus, R. 2013.
+\newblock Intriguing properties of neural networks.
+\newblock \emph{arXiv preprint arXiv:1312.6199}.
+
+\bibitem[{Tian, Krishnan, and Isola(2020)}]{tian2020contrastive}
+Tian, Y.; Krishnan, D.; and Isola, P. 2020.
+\newblock Contrastive multiview coding.
+\newblock In \emph{Computer Vision--ECCV 2020: 16th European Conference,
+  Glasgow, UK, August 23--28, 2020, Proceedings, Part XI 16}, 776--794.
+  Springer.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{vaswani2017attention}
+Vaswani, A.; Shazeer, N.; Parmar, N.; Uszkoreit, J.; Jones, L.; Gomez, A.~N.;
+  Kaiser, {\L}.; and Polosukhin, I. 2017.
+\newblock Attention is all you need.
+\newblock In \emph{Advances in neural information processing systems},
+  5998--6008.
+
+\bibitem[{Wu et~al.(2018)Wu, Xiong, Yu, and Lin}]{wu2018unsupervised}
+Wu, Z.; Xiong, Y.; Yu, S.~X.; and Lin, D. 2018.
+\newblock Unsupervised feature learning via non-parametric instance
+  discrimination.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, 3733--3742.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Sheng, Alhazmi, and
+  Li}]{zhang2020adversarial}
+Zhang, W.~E.; Sheng, Q.~Z.; Alhazmi, A.; and Li, C. 2020.
+\newblock Adversarial attacks on deep-learning models in natural language
+  processing: A survey.
+\newblock \emph{ACM Transactions on Intelligent Systems and Technology (TIST)},
+  11(3): 1--41.
+
+\end{thebibliography}
