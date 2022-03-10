@@ -169,7 +169,22 @@ positioning}
   \end{frame}
 
   
-\section{Introducción}
+  \section{Introducción}
+
+  \begin{frame}{Adversarial Training}
+
+
+
+  \end{frame}
+
+  \begin{frame}{Contrastive Learning}
+    \begin{shaded}
+      {\color{Maroon}\textbf{Idea}:} Train the \textbf{representation} layer of a model using the contrastive loss function.
+    \end{shaded}
+     \[
+        \ell(\theta) = - E_X \left[ \log \frac{h_\theta(x^*,z)}{\sum_{x \in X}h_\theta(x,z)}\right].
+        \]
+  \end{frame}
 
 
   \section{Aprendizaje contrastivo}
@@ -181,6 +196,7 @@ positioning}
   \begin{frame}{Pérdida contrastiva y cota inferior contrastiva}
     
     \begin{defi}[Pérdida contrastiva]
+
       Sea \(X =\{x^*,x_1,\dots,x_{N-1}\}\) un conjunto de \(N\) ejemplos donde $x^*$ ha sido extraido de la distribución conjunta \(P(x,z)\) y le resto han sido extraídos del producto de las distribuciones marginales \(P(x),P(z)\). Se define entonces la función de pérdida contrastiva como  
       \[ 
         \ell(\theta) = - E_X \left[ \log \frac{h_\theta(x^*,z)}{\sum_{x \in X}h_\theta(x,z)}\right]. 
