@@ -1,0 +1,234 @@
+\documentclass[aspectratio=169]{beamer}
+
+
+
+% OPCIONES DE BEAMER
+
+\definecolor{Maroon}{cmyk}{0, 0.87, 0.88, 0.1}
+\definecolor{teal}{rgb}{0.0, 0.45, 0.45}
+
+\usetheme[block=fill,numbering=fraction,, subsectionpage=progressbar, titleformat section=smallcaps]{metropolis}
+\setbeamertemplate{frametitle continuation}[roman]
+\setbeamertemplate{section in toc}[balls numbered]
+\setbeamertemplate{subsection in toc}[subsections unnumbered]
+%\setsansfont[BviejoFont={Fira Sans SemiBold}]{Fira Sans Book}  % Increase font weigth
+\widowpenalties 1 10000
+\raggedbottom
+
+% COLORES
+\setbeamercolor{palette primary}{bg=teal}
+\setbeamercolor{progress bar}{use=Maroon, fg=Maroon}
+
+% PAQUETES
+\usepackage{bm}
+\usepackage{xcolor}
+\colorlet{shadecolor}{blue!15}
+\usepackage{framed}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-noshorthands]{babel}
+\usepackage{subfig}
+\usepackage{graphicx}
+\usepackage{minted}
+\usepackage{ upgreek }
+
+
+
+% Macros
+\newcommand{\bx}{\bm{x}}
+\newcommand{\bX}{\bm{X}}
+\newcommand{\bw}{\bm{w}}
+\newcommand{\bW}{\bm{W}}
+\newcommand{\bz}{\bm{z}}
+\newcommand{\bZ}{\bm{Z}}
+\newcommand{\bv}{\bm{v}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bH}{\bm{H}}
+\newcommand{\bh}{\bm{h}}
+\newcommand{\bSigma}{\bm{\Sigma}}
+\newcommand{\bpi}{\bm{\pi}}
+\newcommand{\bLambda}{\bm{\Lambda}}
+\newcommand{\bmu}{\bm{\mu}}
+\newcommand{\btheta}{\bm{\theta}}
+\newcommand{\bnu}{\bm{\nu}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand\E[2]{\mathbb{E}_{#1}\left[#2\right]}
+\newcommand\KL[2]{D_{KL}\Big(#1 \bigm|\bigm| #2\Big)}
+\newcommand{\bigCI}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\newcommand{\bigCD}{\centernot{\bigCI}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\R}{\mathbb{R}}
+\usepackage{pgfplots}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\ps}{x^+}
+\newcommand{\ns}{x^-}
+
+
+% TikZ
+\usepackage{tikz}
+
+\usepackage{arydshln}
+
+\captionsetup[subfloat]{labelformat=empty}
+
+\newtheorem{defi}{Definición}
+\newtheorem{prop}{Proposición}
+\newtheorem{nth}{Teorema}
+\newtheorem{cor}{Corolario}
+
+
+
+
+\usetikzlibrary{arrows.meta,
+chains,
+positioning}
+
+\newcommand\Fontvi{\fontsize{8}{7.2}\selectfont}
+
+\title{Adversarial Training with Contrastive Learning in NLP}
+\subtitle{Máster en Ciencia de Datos}
+\date{\today}
+\author{Francisco Javier Sáez Maldonado}
+\institute{Procesamiento de Lenguaje Natural \\\\\\ \emph{Escuela Politécnica Superior} \\ \emph{Universidad Autónoma de Madrid}}
+
+\usepackage[absolute,overlay]{textpos}
+
+
+\graphicspath{{../thesis/media/}}
+
+
+\begin{document}
+  \maketitle
+
+
+  \begin{frame}{Índice}
+    \begin{columns}
+      \begin{column}{0.5\textwidth}
+         % Inferencia estadística\\
+         % \quad Enfoques\\
+         \textbf{1. Teoría de la información}\\
+         %\quad Entropía\\
+         \quad Información mutua\\
+         \quad Cotas inferiores\\
+         \vspace*{0.2cm}
+         \textbf{2. Aprendizaje contrastivo}\\
+         \quad Estimación del ruido contrastiva\\
+         \quad Contrastive predictive coding\\
+         \quad Pérdida usando tripletas\\
+       \end{column}
+       \begin{column}{0.5\textwidth}
+         \textbf{3. Nuevos marcos de trabajo}\\
+         \quad SimCLR \\
+         \quad Bootstrap your own latent\\
+         \vspace*{0.2cm}
+         \textbf{4. Experimentación}\\
+         \quad Objetivos\\
+         \quad Experimentos con SimCLR\\
+         \quad Experimentos con BYOL\\
+       \end{column}
+     \end{columns}
+  \end{frame}
+
+  
+
+  \begin{frame}{Motivación}
+
+  \centering
+  \begin{columns}
+      \begin{column}{0.5\textwidth}
+        \begin{center}
+        \textbf{Dato}
+        \end{center}
+        \[
+      \left(0.1,0,2,1,0,0.5,2.4,5 \right)  
+     \]
+      \end{column}
+      \begin{column}{0.5\textwidth}  %%<--- here
+        \begin{center}
+          \textbf{Etiqueta}
+          \end{center}
+        \[
+        \text{Perro}  
+        \]
+
+      \end{column}
+    \end{columns}
+
+
+    \pause 
+    
+    \begin{shaded}
+      Sea $x \in \R^d$ un vector de entrada a un modelo de aprendizaje automático. Una \emph{representación} $\tilde{x} \in \R^n$ es otro vector de menor dimensión que comparte información o características con $x$.
+    \end{shaded}
+
+
+    {\color{Maroon}\textbf{Objetivo}:} extraer \textbf{representaciones} que sean buenas en general para \textbf{tareas posteriores}.
+  \end{frame}
+
+  
+\section{Introducción}
+
+
+  \section{Aprendizaje contrastivo}
+
+
+      
+
+  
+  \begin{frame}{Pérdida contrastiva y cota inferior contrastiva}
+    
+    \begin{defi}[Pérdida contrastiva]
+      Sea \(X =\{x^*,x_1,\dots,x_{N-1}\}\) un conjunto de \(N\) ejemplos donde $x^*$ ha sido extraido de la distribución conjunta \(P(x,z)\) y le resto han sido extraídos del producto de las distribuciones marginales \(P(x),P(z)\). Se define entonces la función de pérdida contrastiva como  
+      \[ 
+        \ell(\theta) = - E_X \left[ \log \frac{h_\theta(x^*,z)}{\sum_{x \in X}h_\theta(x,z)}\right]. 
+        \]
+    \end{defi}
+
+  
+  \end{frame}
+
+
+
+
+  
+  
+  \begin{frame}{Tercer experimento y resultados finales}
+
+  \end{frame}
+
+  
+  
+  \begin{frame}{Experimento con BYOL}
+
+  
+  
+  
+  \end{frame}
+  
+
+  
+
+
+  
+  \begin{frame}{Conclusiones}
+
+    \begin{itemize}
+      \item El uso de la teoría de la información proporciona un buen punto de partida para el aprendizaje de representaciones.
+      \item El aprendizaje contrastivo ha probado ser la mejor forma de obtener representaciones que son útiles en tareas posteriores.
+      \item Ambos marcos de trabajo probados obtienen buenos resultados en la adaptación a conjuntos de datos más pequeños.
+    \end{itemize}
+  \end{frame}
+  
+  \appendix
+
+  \begin{frame}[noframenumbering,standout]
+    Gracias por su atención
+  \end{frame}
+
+
+
+
+\end{document}
