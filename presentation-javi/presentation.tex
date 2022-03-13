@@ -8,6 +8,7 @@
 \definecolor{teal}{rgb}{0.0, 0.45, 0.45}
 
 \usetheme[block=fill,numbering=fraction,, subsectionpage=progressbar, titleformat section=smallcaps]{metropolis}
+\setbeamertemplate{blocks}[rounded][shadow=false]
 \setbeamertemplate{frametitle continuation}[roman]
 \setbeamertemplate{section in toc}[balls numbered]
 \setbeamertemplate{subsection in toc}[subsections unnumbered]
@@ -78,9 +79,13 @@
 \newtheorem{prop}{Proposición}
 \newtheorem{nth}{Teorema}
 \newtheorem{cor}{Corolario}
+\newtheorem{ex}{Ejemplo}
 
-
-
+\definecolor{studentbrown}{RGB}{124,71,50}
+\AtBeginEnvironment{ex}{
+    \setbeamercolor{block title}{use=example text,fg=white,bg=example text.fg!75!black}
+    \setbeamercolor{block body}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+}
 
 \usetikzlibrary{arrows.meta,
 chains,
@@ -89,15 +94,12 @@ positioning}
 \newcommand\Fontvi{\fontsize{8}{7.2}\selectfont}
 
 \title{Adversarial Training with Contrastive Learning in NLP}
-\subtitle{Máster en Ciencia de Datos}
+\subtitle{Procesamiento de Lenguaje Natural}
 \date{\today}
 \author{Francisco Javier Sáez Maldonado}
-\institute{Procesamiento de Lenguaje Natural \\\\\\ \emph{Escuela Politécnica Superior} \\ \emph{Universidad Autónoma de Madrid}}
+\institute{Máster en Ciencia de Datos \\\\\\ \emph{Escuela Politécnica Superior} \\ \emph{Universidad Autónoma de Madrid}}
 
 \usepackage[absolute,overlay]{textpos}
-
-
-\graphicspath{{../thesis/media/}}
 
 
 \begin{document}
@@ -105,127 +107,105 @@ positioning}
 
 
   \begin{frame}{Índice}
-    \begin{columns}
-      \begin{column}{0.5\textwidth}
-         % Inferencia estadística\\
-         % \quad Enfoques\\
-         \textbf{1. Teoría de la información}\\
-         %\quad Entropía\\
-         \quad Información mutua\\
-         \quad Cotas inferiores\\
-         \vspace*{0.2cm}
-         \textbf{2. Aprendizaje contrastivo}\\
-         \quad Estimación del ruido contrastiva\\
-         \quad Contrastive predictive coding\\
-         \quad Pérdida usando tripletas\\
-       \end{column}
-       \begin{column}{0.5\textwidth}
-         \textbf{3. Nuevos marcos de trabajo}\\
-         \quad SimCLR \\
-         \quad Bootstrap your own latent\\
-         \vspace*{0.2cm}
-         \textbf{4. Experimentación}\\
-         \quad Objetivos\\
-         \quad Experimentos con SimCLR\\
-         \quad Experimentos con BYOL\\
-       \end{column}
-     \end{columns}
+    \tableofcontents
   \end{frame}
 
   
 
-  \begin{frame}{Motivación}
+  \begin{frame}{Introducción}
 
-  \centering
-  \begin{columns}
-      \begin{column}{0.5\textwidth}
-        \begin{center}
-        \textbf{Dato}
-        \end{center}
-        \[
-      \left(0.1,0,2,1,0,0.5,2.4,5 \right)  
-     \]
-      \end{column}
-      \begin{column}{0.5\textwidth}  %%<--- here
-        \begin{center}
-          \textbf{Etiqueta}
-          \end{center}
-        \[
-        \text{Perro}  
-        \]
-
-      \end{column}
-    \end{columns}
-
-
-    \pause 
-    
-    \begin{shaded}
-      Sea $x \in \R^d$ un vector de entrada a un modelo de aprendizaje automático. Una \emph{representación} $\tilde{x} \in \R^n$ es otro vector de menor dimensión que comparte información o características con $x$.
-    \end{shaded}
-
-
-    {\color{Maroon}\textbf{Objetivo}:} extraer \textbf{representaciones} que sean buenas en general para \textbf{tareas posteriores}.
+    \begin{itemize}
+      \item \textbf{Tarea}: Modelado del lenguage (LM) y Traducción automática (NMT)
+      \pause 
+      \item \textbf{Objetivo}: Conseguir modelos que sean más robustos semánticamente:
+      \[
+      \text{Inputs parecidos} \implies \text{ Outputs parecidos}  
+      \]
+    \end{itemize}
   \end{frame}
-
   
-  \section{Introducción}
 
+  \section{Herramientas}
+
+  \subsection{Adversarial Training}
   \begin{frame}{Adversarial Training}
 
+    \begin{defi}[Adversarial Learning]
+      Técnica usada en el aprendizaje automático para, usando información sobre un modelo, crear ataques maliciosos para causar fallos en el modelo
+    \end{defi}
+    \pause
 
-
-  \end{frame}
-
-  \begin{frame}{Contrastive Learning}
-    \begin{shaded}
-      {\color{Maroon}\textbf{Idea}:} Train the \textbf{representation} layer of a model using the contrastive loss function.
-    \end{shaded}
-     \[
-        \ell(\theta) = - E_X \left[ \log \frac{h_\theta(x^*,z)}{\sum_{x \in X}h_\theta(x,z)}\right].
-        \]
-  \end{frame}
-
-
-  \section{Aprendizaje contrastivo}
-
-
-      
-
-  
-  \begin{frame}{Pérdida contrastiva y cota inferior contrastiva}
-    
-    \begin{defi}[Pérdida contrastiva]
-
-      Sea \(X =\{x^*,x_1,\dots,x_{N-1}\}\) un conjunto de \(N\) ejemplos donde $x^*$ ha sido extraido de la distribución conjunta \(P(x,z)\) y le resto han sido extraídos del producto de las distribuciones marginales \(P(x),P(z)\). Se define entonces la función de pérdida contrastiva como  
-      \[ 
-        \ell(\theta) = - E_X \left[ \log \frac{h_\theta(x^*,z)}{\sum_{x \in X}h_\theta(x,z)}\right]. 
-        \]
+    \begin{defi}[Adversarial example]
+      Ejemplo diseñado para engañar al modelo, creado introduciendo una \emph{perturbación} en un ejemplo original.
     \end{defi}
 
-  
-  \end{frame}
-
-
-
-
-  
-  
-  \begin{frame}{Tercer experimento y resultados finales}
+    \begin{center}
+    ¿ Cómo ayuda el aprendizaje adversario a nuestros modelos ?
+    \end{center}
 
   \end{frame}
 
-  
-  
-  \begin{frame}{Experimento con BYOL}
+  \begin{frame}{Ejemplos adversarios en NLP}
+    Ejemplos de técnicas:
 
-  
-  
-  
+    \begin{itemize}
+      \item Visuales
+      \item omega
+    \end{itemize}
   \end{frame}
-  
+
+  \begin{frame}{Ejemplos adversarios}
+    Dada una secuencia \(s = \{x_1,\dots,x_T\}\) de tokens
+    \begin{enumerate}
+      \item Creamos una representación embebida en un espacio continuo 
+      \[
+        \mathbf{E}x_i = e_i.  
+      \]
+      \item Añadimos una pequeña perturbación en el embedding
+      \[
+      e_i' = e_i - \epsilon \frac{g}{\norm{g}_2},   
+      \]
+      siendo \(g = \nabla_{e_i}J(s,\theta)\) y \(J\) la función de coste.
+    \end{enumerate}
+
+    Función de coste actual:
+    \[
+    \mathcal J(\theta) = \sum_s \mathcal L(s,\theta) + \alpha \sum_{s'} \mathcal L_{adv} (s',\theta), \quad \alpha \in [0,1].  
+    \]
+  \end{frame}
+
+  \subsection{Contrastive Learning}
+
+  \begin{frame}{Contrastive Learning}
+    
+      {\color{Maroon}\textbf{Idea}:} Acercar las representaciones de ejemplos positivos (de la misma clase) y alejar las de los ejemplos negativos (resto de ejemplos).
+    
+
+    \begin{ex}
+      Original: Elefante. Positivo: Hipopótamo. Negativo: Pistola.
+    \end{ex}
+
+    \begin{defi}[Pérdida contrastiva]
+      Sean \(a_i\) las entradas originales, \(p_{a_i}\) ejemplos positivos y \(n_{a}\) ejemplos negativos. Se define la pérdida contrastiva como:
+      \[
+      \mathcal L_{cont} = - \sum_{a_i \in A} \log \frac{\exp(a_i \cdot p_{a_i}/\tau)}{\sum_{n_a \in A - \{a_i\} \exp(a_i \cdot n_a / \tau)}}  
+      \]
+    \end{defi}
+  \end{frame}
+
+
+  \section{Framework}
+
+
+
 
   
+  \begin{frame}
+  \end{frame}
+
+  \section{Resultados}
+
+
 
 
   
