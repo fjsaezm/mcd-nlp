@@ -32,7 +32,8 @@
 \usepackage{graphicx}
 \usepackage{minted}
 \usepackage{ upgreek }
-
+\usepackage{multirow}
+\usepackage{makecell}
 
 
 % Macros
@@ -79,13 +80,15 @@
 \usepackage{natbib}
 
 
+\AtBeginSubsection{}
+
 \captionsetup[subfloat]{labelformat=empty}
 
-\newtheorem{defi}{Definición}
+\newtheorem{defi}{Definition}
 \newtheorem{prop}{Proposición}
 \newtheorem{nth}{Teorema}
 \newtheorem{cor}{Corolario}
-\newtheorem{ex}{Ejemplo}
+\newtheorem{ex}{Example}
 
 \definecolor{studentbrown}{RGB}{124,71,50}
 \AtBeginEnvironment{ex}{
@@ -100,7 +103,7 @@ positioning}
 \newcommand\Fontvi{\fontsize{8}{7.2}\selectfont}
 
 \title{Adversarial Training with Contrastive Learning in NLP}
-\subtitle{Procesamiento de Lenguaje Natural}
+\subtitle{Natural Language Processing}
 \date{\today}
 \author{Francisco Javier Sáez Maldonado}
 \institute{Máster en Ciencia de Datos \\\\\\ \emph{Escuela Politécnica Superior} \\ \emph{Universidad Autónoma de Madrid}}
@@ -112,81 +115,81 @@ positioning}
   \maketitle
 
 
-  \begin{frame}{Índice}
+  \begin{frame}{Table of contents}
     \tableofcontents
   \end{frame}
 
   
 
-  \begin{frame}{Introducción}
+  \begin{frame}{Introduction}
 
     \begin{itemize}
-      \item \textbf{Tarea}: Modelado del lenguage (LM) y Traducción automática (NMT)
+      \item \textbf{Task}: Language Modelling (LM) and Neural Machine Translation (NMT).
       \pause 
-      \item \textbf{Objetivo}: Conseguir modelos que sean más robustos semánticamente:
+      \item \textbf{Goal}: Improve models so that they are semantically more robust:
       \[
-      \text{Inputs parecidos} \implies \text{ Outputs parecidos}  
+      \text{Similar inputs} \implies \text{Similar outputs}  
       \]
     \end{itemize}
   \end{frame}
   
 
-  \section{Herramientas}
+  \section{Tools}
 
   \subsection{Adversarial Training}
   \begin{frame}{Adversarial Training}
 
     \begin{defi}[Adversarial Learning]
-      Técnica usada en el aprendizaje automático para, usando información sobre un modelo, crear ataques maliciosos para causar fallos en el modelo
+      Machine learning technique used for, making use of the information about a model, creating malicious attacks to cause failures in the model
     \end{defi}
     \pause
 
     \begin{defi}[Adversarial example]
-      Ejemplo diseñado para engañar al modelo, creado introduciendo una \emph{perturbación} en un ejemplo original.
+      Example designed to fool the model. Usually created by introducing a \emph{perturbation} in an original example.
     \end{defi}
 
     \begin{center}
-    ¿ Cómo ayuda el aprendizaje adversario a nuestros modelos ?
+     How does adversarial learning improve our models ?
     \end{center}
 
   \end{frame}
 
-  \begin{frame}{Técnicas de creación ejemplos adversarios en NLP}
+  \begin{frame}{Adversarial examples creation techniques}
 
     \begin{itemize}
-      \item Visuales: \citep{DBLP:journals/corr/abs-2005-05909}.
+      \item Visual techniques: \citep{DBLP:journals/corr/abs-2005-05909}.
       \begin{table}[H]
         \begin{tabular}{l|l|l}
         Original Input      & This film has a special place in my heart & \textcolor{green}{Positive} \\ \hline
         Adversarial example & This film has a special pl\textcolor{red}{ca}e in my he\textcolor{red}{ra}t & \textcolor{red}{Negative}
         \end{tabular}
-        \caption{Ejemplo extraído de \citep{DBLP:journals/corr/abs-1801-04354}}
+        \caption{Example extracted from \citep{DBLP:journals/corr/abs-1801-04354}}
         \end{table}
-      \item Semánticas:\citep{DBLP:journals/corr/abs-1907-11932}
+      \item Semantic:\citep{DBLP:journals/corr/abs-1907-11932}
       \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{00-ae-example}
-        \caption{Ejemplo extraído de \citep{DBLP:journals/corr/abs-1907-11932}}
+        \caption{Example extracted from \citep{DBLP:journals/corr/abs-1907-11932}}
       \end{figure}
 
     \end{itemize}
   \end{frame}
 
-  \begin{frame}{Ejemplos adversarios}
-    Dada una secuencia \(s = \{x_1,\dots,x_T\}\) de tokens
+  \begin{frame}{Our adversarial examples}
+    Given a sequence of tokens \(s = \{x_1,\dots,x_T\}\)
     \begin{enumerate}
-      \item Creamos una representación embebida en un espacio continuo 
+      \item We map each discrete token to an embedded representation in the continuous space
       \[
         \mathbf{E}x_i = e_i.  
       \]
-      \item Añadimos una pequeña perturbación en el embedding
+      \item We add a little perturbation to the embedding
       \[
       e_i' = e_i - \epsilon \frac{g}{\norm{g}_2},   
       \]
-      siendo \(g = \nabla_{e_i}J(s,\theta)\) y \(J\) la función de coste.
+      with \(g = \nabla_{e_i}J(s,\theta)\) and \(J\) the loss function.
     \end{enumerate}
 
-    Función de coste actual:
+    Current loss function:
     \[
     \mathcal J(\theta) = \sum_s \mathcal L(s,\theta) + \alpha \sum_{s'} \mathcal L_{adv} (s',\theta), \quad \alpha \in [0,1].  
     \]
@@ -196,15 +199,15 @@ positioning}
 
   \begin{frame}{Contrastive Learning}
     
-      {\color{Maroon}\textbf{Idea}:} Acercar las representaciones de ejemplos positivos (de la misma clase) y alejar las de los ejemplos negativos (resto de ejemplos).
+      {\color{Maroon}\textbf{Idea}:} Pull the representations of positive examples (same class examples) close and push apart the representations of negative examples (rest of examples).
     
 
     \begin{ex}
-      Original: Elefante. Positivo: Hipopótamo. Negativo: Pistola.
+      Original: Elephant. Positive: Tiger. Negative: Pizza.
     \end{ex}
 
-    \begin{defi}[Pérdida contrastiva]
-      Sean \(a_i\) las entradas originales, \(p_{a_i}\) ejemplos positivos y \(n_{a}\) ejemplos negativos. Se define la pérdida contrastiva como:
+    \begin{defi}[Contrastive loss]
+      Let \(a_i\) be the original inputs, \(p_{a_i}\) positive examples and \(n_{a}\) negative examples. The contrastive loss is defined as follows:
       \[
       \mathcal L_{cont} = - \sum_{a_i \in A} \log \frac{\exp(a_i \cdot p_{a_i}/\tau)}{\sum_{n_a \in A - \{ a_i \} } \exp(a_i \cdot n_a / \tau)}  
       \]
@@ -214,24 +217,24 @@ positioning}
 
   \section{Framework}
 
-  \begin{frame}{Elementos}
-    Consideramos :
+  \begin{frame}{Elements}
+    We consider:
     
     \begin{itemize}
-    \item  \(\mathbf S = \{s_1,\dots,s_B\}\) un conjunto de frases, donde cada frase \(s_k = \{x_{k1},\dots,x_{kN}\}\) tiene \(N\) tokens.
+    \item  \(\mathbf S = \{s_1,\dots,s_B\}\) a set of sentences, where each sentence \(s_k = \{x_{k1},\dots,x_{kN}\}\) contains \(N\) tokens.
     \pause
-    \item \(\mathbf E s_k = \{\mathbf E x_{k1},\dots, \mathbf E x_{kN}\} = \{e_{k1},\dots e_{kN}\}\) el embedding al espacio continuo de cada frase.
+    \item \(\mathbf E s_k = \{\mathbf E x_{k1},\dots, \mathbf E x_{kN}\} = \{e_{k1},\dots e_{kN}\}\) the continuous space embedding of each sentence.
     \pause
-    \item El vocabulario \(\mathcal V\) y un subconjunto \textbf{restringido} del mismo del que excluimos palabras incompletas (caracteres individuales o símbolos) \(\mathcal V_R\)
+    \item The vocabulary \(\mathcal V\) and a \textbf{restricted} subset from it in which we exclude incomplete words (single characters or symbols) \(\mathcal V_R\)
     \pause
-    \item La función que nos da la restricción a \(\mathcal V_R\):
+    \item The restriction function from \(\mathcal V\) to \(\mathcal V_R\):
     \[
       \mathcal M (\mathbf E x_{ki}) = \begin{cases}1 & \text{ if } x_{ki}\in \mathcal V_R \\ 0 & \text{otherwise}\end{cases}
     \]
-    (evita tomar candidatos a modificación adversaria sin sentido).
+    (this function avoids taking senseless adversarial candidates).
 
     \pause
-    \item Llamaremos \(h_{kj}\) a la representación obtenida de la frase \(s_k\).
+    \item  \(h_{kj}\) the representation of each sentence \(s_k\).
 
     \end{itemize}
   \end{frame}
@@ -246,17 +249,17 @@ positioning}
     \end{figure}
   \end{frame}
 
-  \begin{frame}{Consideraciones sobre ATCL}
+  \begin{frame}{Considerations about ATCL}
 
     
     \begin{itemize}
-      \item Con el ejemplo adversario alejamos la representación de la frase original, y forzamos la cercanía mediante contrastive learning.
+      \item We push apart the original sentence representation using the adversarial example, and we pull it back using the contrastive loss.
       
-      \item Para la función de pérdida contrastiva, \(\mathcal L_{\text{cont}}\), los ejemplos negativos se samplean del conjunto \(\mathbf{H(S)} - \{h_{kj}\}\), para evitar tomar a la misma \(h_{kj}\) como ejemplo negativo.
+      \item In the contrastive loss, \(\mathcal L_{\text{cont}}\), the negative examples are sampled from the set \(\mathbf{H(S)} - \{h_{kj}\}\). This avoids sampling \(h_{kj}\) as a negative sample with itself.
     \end{itemize}
 
-    \begin{defi}[Función de pérdida de ATCL]
-      La función de pérdida que se utiliza para entrenar el framework ATCL es:
+    \begin{defi}[ATCL's loss function]
+      The used loss function to train ATCL is:
       \[
       \mathcal J(\mathbf \theta)_{\text{ATCL}} = \sum_{\mathbf{s},\mathbf{s'}} \left( \mathcal L + \alpha \mathcal L_{\text{adv}} + \beta \mathcal L_{\text{cont}}\right)  
       \]
@@ -264,41 +267,86 @@ positioning}
 
     \end{frame}
 
+  \section{Experiments and results}
+
+  \begin{frame}{Language modelling}
+
+\vspace{-0.3cm}
+\begin{table}[t]
+  \resizebox{\columnwidth}{!}{
+\begin{tabular}{l|cccc}
+\hline
+\multirow{2}{*}{\textbf{Model and Training}} & \multicolumn{2}{c}{\textbf{Wikitext 103}} & \multicolumn{2}{c}{\textbf{Penn Tree Bank}} \\ \cline{2-5} 
+ & \textbf{Validation}         & \textbf{Test}        & \textbf{Validation}          & \textbf{Test}         \\ \hline
+\textbf{T XL base} & 23.10 & 24.00 & 56.72  & 54.52 \\ 
+\textbf{T XL +TT}  & 23.61 &  25.70 & 57.90  & 55.40  \\ \hline
+\textbf{Baseline TT} & 22.70 & 22.42 & 41.91 & 36.13 \\ 
+\textbf{Baseline +Adv. only} & 21.75 & 21.67 & \textcolor{orange}{42.68} & \textcolor{orange}{36.46} \\ \hline
+\textbf{Baseline +ATCL} (n=5) & 22.79 & 22.59 & 37.93 & 32.89\\ 
+\textbf{Baseline +ATCL} (n=10) & 21.75 & 21.67 & \textbf{35.29} & \textbf{29.08} \\  
+\textbf{Baseline +ATCL} (n=20) & \textbf{20.73} & \textbf{20.61} & 42.52 & 36.85 \\ 
+\hline
+\end{tabular}
+}
+	\caption{Perplexity achieved.}
+	\label{tab:lmresults}
+\end{table}
+
+  \end{frame}
+
+
+  \begin{frame}{Language Modelling}
+
+    \begin{table}[t]
+\begin{center}
+  \resizebox{\columnwidth}{!}{
+    \begin{tabular}{c|c|c|c}
+    \hline
+    \textbf{Word}   & \textbf{Baseline}      & \textbf{+Adv. only  }    & \textbf{+ATCL}    \\ \hline
+    \textbf{friend} & \makecell{`brother', `daughter', \\ `understanding', \textbf{`director'}} & \makecell{`cousin', `colleague', \\ \textbf{`knowledge'}, `mentor'} & \makecell{`cousin', `fellow', \\ `partner', `colleague'} \\ \hline
+    \textbf{hate}   & \makecell{`admit', `prejudice', \\ `troubled', `regret'} & \makecell{\textbf{`loving'}, `hurt', \\ \textbf{`embrace'}, `committing' } & \makecell{`dirty', `poison', \\ `regret', `shame'} \\ \hline
+    \end{tabular}
+  }
+	\caption{Four closest neighbors of some words in the vocabulary of the WikiText-103. Table from \citep{DBLP:journals/corr/abs-2109-09075}. }
+    \label{tab:lmneigh}
+\end{center}
+\end{table}
+  \end{frame}
+
+  \begin{frame}{Neural Machine Translation}
+\begin{table}[ht]
+\begin{center}
+\resizebox{\columnwidth}{!}{
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Model name}   & \textbf{En-De} & \textbf{De-En} & \textbf{En-Fr} & \textbf{Fr-En} \\ \hline
+\begin{tabular}[l]{@{}l@{}}\textbf{Baseline} \\ \textbf{(Transformer S)}\end{tabular} & 24.61 & 30.34 & 35.23 & 34.51 \\ \hline
+\textbf{Baseline +Adv} & 25.04 & 30.36  & 35.02 & \textbf{35.97} \\ \hline
+\multirow{3}{*}{\textbf{Baseline +ATCL}}  & 24.63 & \textbf{31.34} & \textbf{36.40} & 35.35 \\ \cline{2-5} 
+ & \textbf{25.26} & 30.36 & 35.60  & 35.48 \\ \cline{2-5} 
+    & 24.74 & 30.13  & 35.38 & 35.46 \\ \hline
+\end{tabular}
+}
+	\caption{BLEU test scores for the IWSLT dataset. Table from \citep{DBLP:journals/corr/abs-2109-09075}.}
+    \label{tab:nmtresults}
+\end{center}
+\end{table}
+\end{frame}
+
   
-  \begin{frame}
-  \end{frame}
-
-  \section{Experimentos y resultados}
-   PERPLEXITY
-   TABLE resultados
-   TABLE NEIGHBOURS
-
-
-  \begin{frame}{Modelo de Lenguaje}
-    Datasets:
-    \begin{itemize}
-      \item Pen Tree-Bank (1M ejemplos)
-      \item WikiText-103 (+100M ejemplos)
-    \end{itemize}
-    
-  \end{frame}
-
-  \begin{frame}{Traducción automática}
-
-  \end{frame}
-
-  
-  \begin{frame}{Conclusiones}
+  \begin{frame}{Conclusions}
 
     \begin{itemize}
-      \item omega Yea
+      \item Usage of two general machine learning techniques applied to natural language processing.
+      \item Applying this method has a similar effect to regularization.
+      \item Results are promising in Language Modelling, but not so much in Neural Machine Translation.
     \end{itemize}
   \end{frame}
   
   \appendix
 
   \begin{frame}[noframenumbering,standout]
-    Gracias por su atención
+    Thank you for your attention.
   \end{frame}
 
 
