@@ -27,7 +27,7 @@
 \usepackage{framed}
 \usepackage{amsthm}
 \usepackage[utf8]{inputenc}
-\usepackage[spanish, es-noshorthands]{babel}
+\usepackage[english]{babel}
 \usepackage{subfig}
 \usepackage{graphicx}
 \usepackage{minted}
@@ -103,7 +103,7 @@ positioning}
 \newcommand\Fontvi{\fontsize{8}{7.2}\selectfont}
 
 \title{Adversarial Training with Contrastive Learning in NLP}
-\subtitle{Natural Language Processing}
+\subtitle{Daniela N. Rim, DongNyeong Heo,  Heeyoul Choi}
 \date{\today}
 \author{Francisco Javier Sáez Maldonado}
 \institute{Máster en Ciencia de Datos \\\\\\ \emph{Escuela Politécnica Superior} \\ \emph{Universidad Autónoma de Madrid}}
@@ -112,19 +112,20 @@ positioning}
 
 
 \begin{document}
+\setbeamercolor{background canvas}{bg=white}
   \maketitle
 
 
-  \begin{frame}{Table of contents}
-    \tableofcontents
-  \end{frame}
+ % \begin{frame}{Table of contents}
+ %   \tableofcontents
+ % \end{frame}
 
   
 
   \begin{frame}{Introduction}
 
     \begin{itemize}
-      \item \textbf{Task}: Language Modelling (LM) and Neural Machine Translation (NMT).
+      \item \textbf{Task}: Language modeling (LM) and Neural Machine Translation (NMT).
       \pause 
       \item \textbf{Goal}: Improve models so that they are semantically more robust:
       \[
@@ -139,17 +140,17 @@ positioning}
   \subsection{Adversarial Training}
   \begin{frame}{Adversarial Training}
 
-    \begin{defi}[Adversarial Learning]
-      Machine learning technique used for, making use of the information about a model, creating malicious attacks to cause failures in the model
-    \end{defi}
+  %  \begin{defi}[Adversarial Learning]
+  %    Machine learning technique used for, making use of the information about a model, creating malicious attacks to cause failures in the model
+  %  \end{defi}
+  %  \pause
+    \begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{pato}
+    \end{figure}
     \pause
-
-    \begin{defi}[Adversarial example]
-      Example designed to fool the model. Usually created by introducing a \emph{perturbation} in an original example.
-    \end{defi}
-
     \begin{center}
-     How does adversarial learning improve our models ?
+    How does adversarial training help our models ?
     \end{center}
 
   \end{frame}
@@ -157,7 +158,9 @@ positioning}
   \begin{frame}{Adversarial examples creation techniques}
 
     \begin{itemize}
-      \item Visual techniques: \citep{DBLP:journals/corr/abs-2005-05909}.
+      \item Visual techniques: \citep{DBLP:journals/corr/abs-2005-05909}.\\
+      \vspace{0.4cm}
+
       \begin{table}[H]
         \begin{tabular}{l|l|l}
         Original Input      & This film has a special place in my heart & \textcolor{green}{Positive} \\ \hline
@@ -165,7 +168,8 @@ positioning}
         \end{tabular}
         \caption{Example extracted from \citep{DBLP:journals/corr/abs-1801-04354}}
         \end{table}
-      \item Semantic:\citep{DBLP:journals/corr/abs-1907-11932}
+      \item Semantic:\citep{DBLP:journals/corr/abs-1907-11932}.\\
+        \vspace{0.4cm}
       \begin{figure}[H]
         \centering
         \includegraphics[scale=0.5]{00-ae-example}
@@ -184,9 +188,9 @@ positioning}
       \]
       \item We add a little perturbation to the embedding
       \[
-      e_i' = e_i - \epsilon \frac{g}{\norm{g}_2},   
+      e_i' = e_i - \epsilon \frac{\nabla_{e_i}J(s,\theta)}{\norm{\nabla_{e_i}J(s,\theta)}_2}.
       \]
-      with \(g = \nabla_{e_i}J(s,\theta)\) and \(J\) the loss function.
+      
     \end{enumerate}
 
     Current loss function:
@@ -199,7 +203,7 @@ positioning}
 
   \begin{frame}{Contrastive Learning}
     
-      {\color{Maroon}\textbf{Idea}:} Pull the representations of positive examples (same class examples) close and push apart the representations of negative examples (rest of examples).
+      %{\color{Maroon}\textbf{Idea}:} Pull the representations of positive examples (same class examples) close and push apart the representations of negative examples (rest of examples).
     
 
     \begin{ex}
@@ -217,30 +221,10 @@ positioning}
 
   \section{Framework}
 
-  \begin{frame}{Elements}
-    We consider:
-    
-    \begin{itemize}
-    \item  \(\mathbf S = \{s_1,\dots,s_B\}\) a set of sentences, where each sentence \(s_k = \{x_{k1},\dots,x_{kN}\}\) contains \(N\) tokens.
-    \pause
-    \item \(\mathbf E s_k = \{\mathbf E x_{k1},\dots, \mathbf E x_{kN}\} = \{e_{k1},\dots e_{kN}\}\) the continuous space embedding of each sentence.
-    \pause
-    \item The vocabulary \(\mathcal V\) and a \textbf{restricted} subset from it in which we exclude incomplete words (single characters or symbols) \(\mathcal V_R\)
-    \pause
-    \item The restriction function from \(\mathcal V\) to \(\mathcal V_R\):
-    \[
-      \mathcal M (\mathbf E x_{ki}) = \begin{cases}1 & \text{ if } x_{ki}\in \mathcal V_R \\ 0 & \text{otherwise}\end{cases}
-    \]
-    (this function avoids taking senseless adversarial candidates).
-
-    \pause
-    \item  \(h_{kj}\) the representation of each sentence \(s_k\).
-
-    \end{itemize}
-  \end{frame}
+ 
 
   \begin{frame}{Adversarial Training with Contrastive Learning (ATCL)}
-
+    
     \setbeamercolor{background canvas}{bg=white}
     \begin{figure}
     \centering
@@ -252,24 +236,25 @@ positioning}
   \begin{frame}{Considerations about ATCL}
 
     
-    \begin{itemize}
-      \item We push apart the original sentence representation using the adversarial example, and we pull it back using the contrastive loss.
+    %\begin{itemize}
+    %  \item We push apart the original sentence representation using the adversarial example, and we pull it back using the contrastive loss.
       
-      \item In the contrastive loss, \(\mathcal L_{\text{cont}}\), the negative examples are sampled from the set \(\mathbf{H(S)} - \{h_{kj}\}\). This avoids sampling \(h_{kj}\) as a negative sample with itself.
-    \end{itemize}
+    %  \item In the contrastive loss, \(\mathcal L_{\text{cont}}\), the negative examples are sampled from the set \(\mathbf{H(S)} - \{h_{kj}\}\). This avoids sampling \(h_{kj}\) as a negative sample with itself.
+    %\end{itemize}
 
     \begin{defi}[ATCL's loss function]
       The used loss function to train ATCL is:
       \[
-      \mathcal J(\mathbf \theta)_{\text{ATCL}} = \sum_{\mathbf{s},\mathbf{s'}} \left( \mathcal L + \alpha \mathcal L_{\text{adv}} + \beta \mathcal L_{\text{cont}}\right)  
+      \mathcal J(\mathbf \theta)_{\text{ATCL}} =  \left( \mathcal L + \alpha \mathcal L_{\text{adv}} + \beta \mathcal L_{\text{cont}}\right)  
       \]
+      \vspace{0.01cm}
     \end{defi}
 
     \end{frame}
 
   \section{Experiments and results}
 
-  \begin{frame}{Language modelling}
+  \begin{frame}{Language modeling}
 
 \vspace{-0.3cm}
 \begin{table}[t]
@@ -295,7 +280,7 @@ positioning}
   \end{frame}
 
 
-  \begin{frame}{Language Modelling}
+  \begin{frame}{Language modeling}
 
     \begin{table}[t]
 \begin{center}
@@ -339,7 +324,7 @@ positioning}
     \begin{itemize}
       \item Usage of two general machine learning techniques applied to natural language processing.
       \item Applying this method has a similar effect to regularization.
-      \item Results are promising in Language Modelling, but not so much in Neural Machine Translation.
+      \item Results are promising in Language modeling, but not so much in Neural Machine Translation.
     \end{itemize}
   \end{frame}
   
@@ -356,6 +341,24 @@ positioning}
   \bibliographystyle{dinat}
   \bibliography{bibliography.bib}
 
+  \end{frame}
+
+   \begin{frame}[noframenumbering]{Elements}
+    We consider:
+    
+    \begin{itemize}
+    \item  \(\mathbf S = \{s_1,\dots,s_B\}\) a set of sentences, where each sentence \(s_k = \{x_{k1},\dots,x_{kN}\}\) contains \(N\) tokens.
+    \item \(\mathbf E s_k = \{\mathbf E x_{k1},\dots, \mathbf E x_{kN}\} = \{e_{k1},\dots e_{kN}\}\) the continuous space embedding of each sentence.
+    \item The vocabulary \(\mathcal V\) and a \textbf{restricted} subset from it in which we exclude incomplete words (single characters or symbols) \(\mathcal V_R\)
+    \item The restriction function from \(\mathcal V\) to \(\mathcal V_R\):
+    \[
+      \mathcal M (\mathbf E x_{ki}) = \begin{cases}1 & \text{ if } x_{ki}\in \mathcal V_R \\ 0 & \text{otherwise}\end{cases}
+    \]
+    (this function avoids taking senseless adversarial candidates).
+
+    \item  \(h_{kj}\) the representation of each sentence \(s_k\).
+
+    \end{itemize}
   \end{frame}
 
 \end{document}
