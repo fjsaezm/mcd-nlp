@@ -1,0 +1,1004 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Lab assignment: Aspect Opinion extraction}
+    \author{Sáez Maldonado Fco Javier, Álvarez Ocete José Antonio}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+In this document, we will comment all the tasks and sub tasks that we have coded for this assignment. The most relevant pieces of code and results will be exposed in the following sections.\\
+
+As a note, each section in this document is a task or subtask that \textbf{has been done} for this assignment, and it can be found in the jupyter notebook.
+
+
+
+\hypertarget{assignment-1}{%
+    \section{Assignment 1}\label{assignment-1}}
+
+\hypertarget{task-1.1}{%
+    \subsection{Task 1.1}\label{task-1.1}}
+
+\textbf{Loading all the hotel reviews from the Yelp hotel reviews file.}
+
+\hypertarget{task-1.2-optional}{%
+    \subsection{Task 1.2 (optional)}\label{task-1.2-optional}}
+
+\textbf{Loading line by line the reviews from the Yelp beauty/spa
+    resorts and restaurants reviews files.}
+
+\hypertarget{task-1.3-optional}{%
+    \subsection{Task 1.3 (optional)}\label{task-1.3-optional}}
+
+\textbf{Loading line by line reviews on other domains (e.g., movies,
+    books, phones, digital music, CDs and videogames) from McAuley's Amazon
+    dataset.}
+
+We tackle all of these tasks at the same time since a general enough
+functions solves all of them directly. The function
+\texttt{load\_json\_line\_by\_line()} reads a json file line by line and
+returns the dataset built.
+
+We additionally created a test function that tests the loading of all the
+described datasets. We have selected the Amazon cell phones and
+accessories dataset because it is big enough without being huge and we
+also have the required aspects for it (see tasks 2.1 to 2.3). In this memory, we only include an example, the rest can be found in the jupyter notebook.
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Reading file inputs/yelp\_dataset/yelp\_hotels.json
+
+    5034 reviews loaded
+
+    Example review: \{'reviewerID': 'qLCpuCWCyPb4G2vN-WZz-Q', 'asin':
+    '8ZwO9VuLDWJOXmtAdc7LXQ', 'summary': 'summary', 'reviewText': "Great hotel in
+    Central Phoenix for a stay-cation, but not necessarily a place to stay out of
+    town and without a car. Not much around the area, and unless you're familiar
+    with downtown, I would rather have a guest stay in Old Town Scottsdale, etc. BUT
+    if you do stay here, it's awesome. Great boutique rooms. Awesome pool that's
+    happening in the summer. A GREAT rooftop patio bar, and a very very busy lobby
+    with Gallo Blanco attached. A great place to stay, but have a car!", 'overall':
+    4.0\}
+
+\end{Verbatim}
+
+\hypertarget{assignment-2}{%
+    \section{Assignment 2}\label{assignment-2}}
+
+\hypertarget{task-2.1}{%
+    \subsection{Task 2.1}\label{task-2.1}}
+
+\textbf{Loading (and printing on screen) the vocabulary of the
+    \texttt{aspects\_hotels.csv} file, and directly using it to identify
+    aspect references in the reviews. In particular, the aspects terms could
+    be mapped by exact matching with nouns appearing in the reviews.}
+
+We will compute a dictionary that matches a certain aspect to every word
+related to it. It will usually be called \texttt{aspect\_words\_dict}.
+This will optimize knowing which aspect is related to each word.
+
+The function \texttt{build\_simple\_vocab} creates this dictionary given
+a path to the file with the initial vocabulary. We introduce it in a
+dataframe (used only with displayability purposes) and we display the
+result.
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+    \prompt{Out}{outcolor}{3}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        0
+        amenity       amenities
+        amenities     amenities
+        services      amenities
+        atmosphere   atmosphere
+        atmospheres  atmosphere
+        ambiance     atmosphere
+        ambiances    atmosphere
+        light        atmosphere
+        lighting     atmosphere
+        lights       atmosphere
+    \end{Verbatim}
+\end{tcolorbox}
+
+In the following cells we compute the aspects referenced by each review
+and display the result for the first few reviews.
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Review: Great hotel in Central Phoenix for a stay-cation, but not
+    necessarily a place to stay out of town and without a car. Not much around the
+    area, and unless you're familiar with downtown, I would rather have a guest stay
+    in Old Town Scottsdale, etc. BUT if you do stay here, it's awesome. Great
+    boutique rooms. Awesome pool that's happening in the summer. A GREAT rooftop
+    patio bar, and a very very busy lobby with Gallo Blanco attached. A great place
+    to stay, but have a car!
+    Aspects: \{'bar', 'shopping', 'building', 'pool', 'transportation'\}
+
+    Review: I feel the Days Inn Tempe is best described as "a place where
+    you can purchase the right to sleep for awhile." I booked my 10-night stay on
+    Travelocity for a non-smoking room, yet when I entered the room I almost choked.
+    It was disgusting. I've never had a smoking hotel room before and I will make
+    sure I don't again. They said they couldn't move us to a different room.My local
+    lady friend brought over a bottle of wine but forgot a corkscrew. No big deal, I
+    thought to myself, as the front desk of a hotel will surely have a corkscrew.
+    Nope. Coors Light it is.The towels felt like they were made of cow tongue, and
+    they missed our wakeup call one morning making me late for a training class that
+    had cost me about \$500.I'm awarding one star in addition to the minimum one-star
+    rating because I got to drink cheap beer by the pool in 90 degree weather for 10
+    days, and there are a few good places to eat and two dollar stores very nearby.
+    The dollar store had a corkscrew.
+    Aspects: \{'atmosphere', 'bedrooms', 'drinks', 'breakfast', 'shopping',
+    'bathrooms', 'price', 'pool'\}
+
+\end{Verbatim}
+
+\hypertarget{task-2.2-optional}{%
+    \subsection{Task 2.2 (optional)}\label{task-2.2-optional}}
+
+\textbf{Generating or extending the lists of terms of each aspect with
+    synonyms extracted from WordNet.}
+
+For this second task we expand the vocabulty using synonims extracted
+from Wordnet. The function \texttt{build\_vocab()} is analogous to the
+previous \texttt{build\_simple\_vocab()} but takes this synonims into
+account.
+
+\hypertarget{task-2.3-optional}{%
+    \subsection{Task 2.3 (optional)}\label{task-2.3-optional}}
+
+\textbf{Managing vocabularies for additional Yelp or Amazon domains. See
+    assignments 1.2 and 1.3}
+
+Extended our previous functions to the new datasets is trivial. We
+simple need to load the correct aspects for each review. The following
+test function computes the following for the Yelp hotels, Yelp
+restaurants and Amazon phones datasets:
+
+\begin{itemize}
+    \tightlist
+    \item
+          Load the reviews and build both the simple and complex vocabularies.
+    \item
+          Print the aspects found in the first few reviews with each vocabulary.
+    \item
+          Print the number of words in both the simple and extended vocabulary
+          for comparison.
+\end{itemize}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+
+    Review: Great hotel in Central Phoenix for a stay-cation, but not
+    necessarily a place to stay out of town and without a car. Not much around the
+    area, and unless you're familiar with downtown, I would rather have a guest stay
+    in Old Town Scottsdale, etc. BUT if you do stay here, it's awesome. Great
+    boutique rooms. Awesome pool that's happening in the summer. A GREAT rooftop
+    patio bar, and a very very busy lobby with Gallo Blanco attached. A great place
+    to stay, but have a car!
+    Aspects: \{'bar', 'shopping', 'building', 'pool', 'transportation'\}
+    Extended Vocab Aspects: \{'bedrooms', 'pool', 'bar', 'service',
+    'location', 'shopping', 'checking', 'building', 'transportation'\}
+
+\end{Verbatim}
+
+From this point onwards we will focus on the hotel dataset. The hotel
+reviews and vocab are loaded now and fixed for the rest of this
+practical assignment.
+
+
+
+\hypertarget{assignment-3}{%
+    \section{Assignment 3}\label{assignment-3}}
+
+\hypertarget{task-3.1-mandatory}{%
+    \subsection{Task 3.1 (mandatory)}\label{task-3.1-mandatory}}
+
+\textbf{Loading Liu's opinion lexicon composed of positive and negative
+    words, accessible as an NLKT corpus, and exploiting it to assign the
+    polarity values to aspect opinions in assignment 4.}
+
+We decided to load not only Liu's lexicon but also `Vader` lexicon. Also, we used `SentiWordNet`, but we do not need to load it in advance to its usage, so we directly use it in the code.
+
+
+\hypertarget{task-3.2-optional}{%
+    \subsection{Task 3.2 (optional)}\label{task-3.2-optional}}
+
+\textbf{Considering modifiers to adjust the polarity values of the
+    aspect opinions in Assignment 4.}
+
+
+\hypertarget{assignment-4}{%
+    \section{Assignment 4}\label{assignment-4}}
+
+Once the aspect vocabulary and opinion lexicons are loaded, the opinions
+about aspects have to be extracted from the reviews. For this purpose,
+POS tagging, constituency and dependency parsing could be used. - POS
+tagging would allow identifying the adjectives in the sentences. -
+Constituency and dependency parsing would allow extracting the relations
+between nouns and adjectives and adverbs.
+
+The following tasks are proposed:
+
+\begin{itemize}
+    \tightlist
+    \item
+          \textbf{Task 4.1 (mandatory)}: extracting the
+          \texttt{{[}aspect,\ aspect\ term,\ opinion\ word,\ polarity{]}} tuples
+          from the input reviews
+    \item
+          \textbf{Task 4.2 (optional)}: extracting the
+          \texttt{{[}aspect,\ aspect\ term,\ opinion\ word,\ modifier,\ polarity{]}}
+          tuples from the input reviews, taking the modifiers of assignment 3.2
+    \item
+          \textbf{Task 4.3 (optional)}: extracting the
+          \texttt{{[}aspect,\ aspect\ term,\ opinion\ word,\ isNegated,\ polarity{]}}
+          tuples from the input reviews, taking the modifiers of assignment 3.3
+\end{itemize}
+
+We firstly create code to extract the asked tuples. This is no more than
+joining (with a little bit of care) all the code that we have previously
+developed. We also parts of the code provided in the assignment. We
+begin by creating a function that returns the POS tagging for a given
+text, and we test it.
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{14}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{pos\PYZus{}tagging}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{I think you are very handsome.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    [[('I', 'PRP'), ('think', 'VBP'), ('you', 'PRP'), ('are', 'VBP'), ('very',
+            'RB'), ('handsome', 'JJ'), ('.', '.')]]
+\end{Verbatim}
+
+Exploring a few examples, we found the following \textbf{difficulty}:
+some adjectives were not detected as adjectives since the first letter
+was uppercased. We decided to \textbf{lowercase} the review text. It
+could be interesting to see if more preprocessing to the text could
+improve the results.
+
+\textbf{Note.-} A list of possible returned POS tags returned by NLTK
+can be found
+\href{https://stackoverflow.com/questions/15388831/what-are-all-possible-pos-tags-of-nltk}{here}.
+
+We define a grammar that tries to capture:
+
+\begin{itemize}
+    \tightlist
+    \item
+          (Adverb) + Adjective + Noun
+    \item
+          Noun + Verb + (Adverb) + Adjective
+\end{itemize}
+
+We test in very simple examples.
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{16}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{} GRAMMAR TESTING}
+        \PY{n}{grammar} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+s2}{JJNN: }\PY{l+s+s2}{\PYZob{}}\PY{l+s+s2}{\PYZlt{}RB.*\PYZgt{}*\PYZlt{}JJ.*\PYZgt{}+\PYZlt{}NN.*\PYZgt{}+\PYZcb{} \PYZsh{} adjectives escorting nouns}
+        \PY{l+s+s2}{      }\PY{l+s+s2}{\PYZob{}}\PY{l+s+s2}{\PYZlt{}NN.*\PYZgt{}+\PYZlt{}VB.*\PYZgt{}\PYZlt{}RB.*\PYZgt{}*\PYZlt{}JJ.*\PYZgt{}+\PYZcb{} \PYZsh{} description sentences}
+        \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Sentence:  The place is perfect
+        [('location', 'place', 'perfect', 'not negated', '', 2.7)]
+
+    Sentence:  The place is absolutely perfect
+        [('location', 'place', 'perfect', 'not negated', 'absolutely', 5.4)]
+
+    Sentence:  The place isn't perfect
+        [('location', 'place', 'perfect', 'negated', '', -2.7)]
+
+    Sentence:  The place isn't absolutely perfect
+        []
+
+    Sentence:  The pool is great
+        [('pool', 'pool', 'great', 'not negated', '', 3.1)]
+
+\end{Verbatim}
+
+We can appreciate that the grammar is working well in all the proposed
+tests but in the last one. In this case, our grammar is not capturing
+the adjective ``perfect'' as an adjective. Let us see what
+\texttt{pos\_tagging} returns:
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{17}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{n}{pos\PYZus{}tagging}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{The place isn}\PY{l+s+se}{\PYZbs{}\PYZsq{}}\PY{l+s+s2}{t absolutely perfect}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+    \prompt{Out}{outcolor}{17}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        [[('The', 'DT'),
+                ('place', 'NN'),
+                ('is', 'VBZ'),
+                ("n't", 'RB'),
+                ('absolutely', 'RB'),
+                ('perfect', 'VB')]]
+    \end{Verbatim}
+\end{tcolorbox}
+
+As we can see, the problem is that the \emph{POS Tagger} indicates that
+\texttt{perfect} is a verb. In this case, this is obviously not true, so
+it would be very interesting to use a different tagger in future
+projects.
+
+We now test the proposed code in the hotel reviews:
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{18}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{k}{def} \PY{n+nf}{test\PYZus{}aspect\PYZus{}opinions}\PY{p}{(}\PY{n}{first\PYZus{}n}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{grammar}\PY{o}{=}\PY{n}{grammar}\PY{p}{)}\PY{p}{:}
+
+        \PY{k}{for} \PY{n}{review} \PY{o+ow}{in} \PY{n}{hotel\PYZus{}reviews}\PY{p}{[}\PY{p}{:}\PY{n}{first\PYZus{}n}\PY{p}{]}\PY{p}{:}
+        \PY{n}{review\PYZus{}text} \PY{o}{=} \PY{n}{review}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reviewText}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Review text: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{review\PYZus{}text}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{pprint}\PY{p}{(}\PY{n}{aspect\PYZus{}opinions\PYZus{}from\PYZus{}review}\PY{p}{(}\PY{n}{review\PYZus{}text}\PY{p}{,} \PY{n}{word\PYZus{}aspect\PYZus{}dict}\PY{p}{,}
+        \PY{n}{adj\PYZus{}polarities}\PY{p}{,} \PY{n}{modifiers}\PY{p}{,} \PY{n}{grammar}\PY{p}{,} \PY{n}{method}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SentiWordNet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+
+        \PY{n}{test\PYZus{}aspect\PYZus{}opinions}\PY{p}{(}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Review text:  Great hotel in Central Phoenix for a stay-cation, but not
+    necessarily a place to stay out of town and without a car. Not much around the
+    area, and unless you're familiar with downtown, I would rather have a guest stay
+    in Old Town Scottsdale, etc. BUT if you do stay here, it's awesome. Great
+    boutique rooms. Awesome pool that's happening in the summer. A GREAT rooftop
+    patio bar, and a very very busy lobby with Gallo Blanco attached. A great place
+    to stay, but have a car!
+
+    [('shopping', 'boutique', 'great', 'not negated', '', 0.0),
+    ('bedrooms', 'rooms', 'great', 'not negated', '', 0.0),
+    ('pool', 'pool', 'awesome', 'not negated', '', 0.75),
+    ('building', 'patio', 'great', 'not negated', '', 0.0),
+    ('bar', 'bar', 'great', 'not negated', '', 0.0),
+    ('building', 'lobby', 'busy', 'not negated', 'very', 0.75),
+    ('building', 'lobby', 'busy', 'not negated', 'very', 0.75),
+    ('location', 'place', 'great', 'not negated', '', 0.0)]
+
+    Review text:  I feel the Days Inn Tempe is best described as "a place where you
+    can purchase the right to sleep for awhile." I booked my 10-night stay on
+    Travelocity for a non-smoking room, yet when I entered the room I almost choked.
+    It was disgusting. I've never had a smoking hotel room before and I will make
+    sure I don't again. They said they couldn't move us to a different room.My local
+    lady friend brought over a bottle of wine but forgot a corkscrew. No big deal, I
+    thought to myself, as the front desk of a hotel will surely have a corkscrew.
+    Nope. Coors Light it is.The towels felt like they were made of cow tongue, and
+    they missed our wakeup call one morning making me late for a training class that
+    had cost me about \$500.I'm awarding one star in addition to the minimum one-star
+    rating because I got to drink cheap beer by the pool in 90 degree weather for 10
+    days, and there are a few good places to eat and two dollar stores very nearby.
+    The dollar store had a corkscrew.
+
+        [('checking', 'stay', '10-night', 'not negated', '', 0.0),
+            ('location', 'deal', 'big', 'not negated', '', 0.125),
+            ('bathrooms', 'towels', 'is.the', 'not negated', '', 0.0),
+            ('drinks', 'beer', 'cheap', 'not negated', '', -0.25)]
+\end{Verbatim}
+
+In this case, we can again observe the problems that the POS tagger
+causes. In the second shown opinion, we see that \textbf{non adjective
+    words are detected as adjectives}. Furthermore, \emph{sequences of
+    characters} (``is.the'') that are not even words are marked as
+adjectives. Clearly, the \emph{non-words} problem could be solved with
+\textbf{text-preprocessing}, but we would need expert information to be
+able to determine which kind of preprocessing should be done. Also, this
+would not fix the problem of the POS tagger tagging incorrectly the
+words.
+
+\hypertarget{assignment-5}{%
+    \section{Assignment 5}\label{assignment-5}}
+
+To validate and evaluate the solutions implemented in previous tasks,
+you are finally proposed the following tasks:
+
+\hypertarget{task-5.1-mandatory}{%
+    \subsection{Task 5.1 (mandatory)}\label{task-5.1-mandatory}}
+
+\textbf{Visualizing on screen the aspect opinions (tuples) of a given
+    review.}
+
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{20}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{n}{plot\PYZus{}review\PYZus{}aspects}\PY{p}{(}\PY{n}{hotel\PYZus{}reviews}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reviewText}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plot\PYZus{}review\PYZus{}aspects}\PY{p}{(}\PY{n}{hotel\PYZus{}reviews}\PY{p}{[}\PY{l+m+mi}{40}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{reviewText}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_33_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+
+\begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_33_3.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+\hypertarget{task-5.2-optional}{%
+    \subsection{Task 5.2 (optional)}\label{task-5.2-optional}}
+
+\textbf{Visualizing on screen a summary of the aspect opinions of a
+    given item. Among other issues, the total number of positive/negative
+    opinions for each aspect of the item could be visualized}.
+
+Two types of visualizations are proposed.
+
+\hypertarget{complete-hotel-plot}{%
+    \paragraph{Complete Hotel Plot}\label{complete-hotel-plot}}
+
+The first one follows the previous approach we plot the aspect and
+polarities in a single review. What we do is to \textbf{sum} the
+polarities per aspect in each of the reviews to plot all the extracted
+aspects and polarities for a single hotel, given by its \texttt{isin},
+which is an identifier.
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{22}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{c+c1}{\PYZsh{} Fixed an asin (the ID associated to a hotel)}
+        \PY{n}{fixed\PYZus{}asin} \PY{o}{=} \PY{n}{hotel\PYZus{}reviews}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{asin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{fixed\PYZus{}hotel\PYZus{}reviews} \PY{o}{=} \PY{p}{[} \PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{hotel\PYZus{}reviews} \PY{k}{if} \PY{n}{x}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{asin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{n}{fixed\PYZus{}asin} \PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Selected }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ opinions for this hotel}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{fixed\PYZus{}hotel\PYZus{}reviews}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+
+        \PY{n}{aspects\PYZus{}per\PYZus{}opinion} \PY{o}{=} \PY{n}{plot\PYZus{}hotel\PYZus{}aspects}\PY{p}{(}\PY{n}{fixed\PYZus{}hotel\PYZus{}reviews}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Selected 102 opinions for this hotel
+\end{Verbatim}
+
+\begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+As we can see, the opinions on this hotel agree in the location of the
+hotel. We can see the little differences between the polarity methods,
+where in the \texttt{SentiWordNet} method the negatives seem to have a
+bigger impact on the final bar plot.
+
+Let us see another hotel with a smaller number of reviews.
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Selected 5 opinions for this hotel
+\end{Verbatim}
+
+\begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_1.png}
+\end{center}
+{ \hspace*{\fill} \\}
+
+In this case, we can see a difference in the polarities in the aspect
+\texttt{building}, since SentiWordNet assigns a lower polarity in any of
+the reviews.
+
+\hypertarget{numerical-statistics-about-the-reviews}{%
+    \paragraph{Numerical statistics about the
+        reviews}\label{numerical-statistics-about-the-reviews}}
+
+The last case would be to design a code that is capable to
+\textbf{summarize} all the positive and negative opinions about an
+aspect given a certain Hotel. The code developed returns the, for
+\textbf{each} of the polarity assignment methods, the following values:
+
+\begin{itemize}
+    \tightlist
+    \item
+          \texttt{single\_positive}, indicating the total number of reviews that
+          say \textbf{at least} one positive thing about the aspect.
+    \item
+          \texttt{single\_negative}, the same as the previous one but saying
+          negative things.
+    \item
+          \texttt{total\_positive} and \texttt{total\_negative}, which is the
+          sum of total positive/negative things said about that aspect
+    \item
+          \texttt{average\_positive/negative} the average polarity of all
+          positive and negative comments done.
+\end{itemize}
+
+We can see the output for both previous case, using the one with lesser
+number of reviews first:
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{25}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{n}{aspects} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{location}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bedrooms}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{service}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{hotel\PYZus{}name} \PY{o}{=} \PY{n}{fixed\PYZus{}asin} \PY{o}{=} \PY{n}{hotel\PYZus{}reviews}\PY{p}{[}\PY{l+m+mi}{40}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{asin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{counts} \PY{o}{=} \PY{n}{count\PYZus{}aspects\PYZus{}opinion}\PY{p}{(}\PY{n}{aspects\PYZus{}per\PYZus{}opinion\PYZus{}2}\PY{p}{,} \PY{n}{aspects}\PY{p}{)}
+        \PY{n}{show\PYZus{}statistics\PYZus{}per\PYZus{}aspect}\PY{p}{(}\PY{n}{hotel\PYZus{}name}\PY{p}{,} \PY{n}{aspects}\PY{p}{,} \PY{n}{counts}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Statistics found for hotel: CYMG5AsrhkhUPro2c6NSUA
+    Aspect: location
+    Liu  SentiWordNet  Vader
+    single\_positive   1.0         1.000    1.0
+    single\_negative   0.0         0.000    0.0
+    total\_positive    2.0         1.000    2.0
+    total\_negative    0.0         0.000    0.0
+    average\_positive  1.0         0.875    2.5
+    average\_negative  0.0         0.000    0.0
+
+    Aspect: bedrooms
+    Liu  SentiWordNet  Vader
+    single\_positive   0.0          0.00    0.0
+    single\_negative   1.0          1.00    1.0
+    total\_positive    0.0          0.00    0.0
+    total\_negative    1.0          1.00    1.0
+    average\_positive  0.0          0.00    0.0
+    average\_negative -1.0         -0.75   -0.4
+
+    Aspect: service
+    Liu  SentiWordNet  Vader
+    single\_positive   0.0         0.000    0.0
+    single\_negative   1.0         1.000    1.0
+    total\_positive    0.0         0.000    0.0
+    total\_negative    1.0         1.000    1.0
+    average\_positive  0.0         0.000    0.0
+    average\_negative -1.0        -0.625   -2.5
+
+\end{Verbatim}
+
+We can see how the service has the highest value of negative polarity,
+as we saw in the charts.
+
+In the first case analyzed before, we obtain the following result:
+
+\begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+    \prompt{In}{incolor}{26}{\boxspacing}
+    \begin{Verbatim}[commandchars=\\\{\}]
+        \PY{n}{hotel\PYZus{}name} \PY{o}{=} \PY{n}{fixed\PYZus{}asin} \PY{o}{=} \PY{n}{hotel\PYZus{}reviews}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{asin}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+        \PY{n}{counts} \PY{o}{=} \PY{n}{count\PYZus{}aspects\PYZus{}opinion}\PY{p}{(}\PY{n}{aspects\PYZus{}per\PYZus{}opinion}\PY{p}{,} \PY{n}{aspects}\PY{p}{)}
+        \PY{n}{show\PYZus{}statistics\PYZus{}per\PYZus{}aspect}\PY{p}{(}\PY{n}{hotel\PYZus{}name}\PY{p}{,} \PY{n}{aspects}\PY{p}{,} \PY{n}{counts}\PY{p}{)}
+    \end{Verbatim}
+\end{tcolorbox}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+    Statistics found for hotel: EcHuaHD9IcoPEWNsU8vDTw
+    Aspect: location
+    Liu  SentiWordNet      Vader
+    single\_positive   36.000000     29.000000  33.000000
+    single\_negative    3.000000      4.000000   3.000000
+    total\_positive    65.000000     53.000000  57.000000
+    total\_negative     4.000000      5.000000   4.000000
+    average\_positive   1.146154      0.650943   3.042982
+    average\_negative  -1.000000     -0.600000  -2.000000
+
+    Aspect: bedrooms
+    Liu  SentiWordNet      Vader
+    single\_positive   20.000000     15.000000  13.000000
+    single\_negative    1.000000     12.000000   1.000000
+    total\_positive    23.000000     15.000000  14.000000
+    total\_negative     1.000000     15.000000   1.000000
+    average\_positive   1.130435      0.433333   2.135714
+    average\_negative  -1.000000     -0.541667  -2.300000
+
+    Aspect: service
+    Liu  SentiWordNet      Vader
+    single\_positive   16.000000      10.00000  12.000000
+    single\_negative    4.000000       4.00000   2.000000
+    total\_positive    37.000000      25.00000  23.000000
+    total\_negative    10.000000       8.00000   4.000000
+    average\_positive   0.986486       0.61250   2.656522
+    average\_negative  -1.200000      -0.84375  -3.150000
+
+\end{Verbatim}
+
+\section{ Conclusion}
+
+After all this work, a few conclusions have been extracted:
+\begin{enumerate}
+    \item Defining a complete grammar is complicated. In natural language, there are many possible cases of use of our words, so most of the time it is impossible to capture them all in a grammar. We decided to use a simple grammar for simplicity of analyzing our problems.
+    \item The POS tagger determines the quality of our analysis, since sometimes it captures wrong tags for certain words, which causes problems with the posterior analysis.
+    \item Also, the final polarity value depends on the used lexicon. Although sometimes the values are coincident, most of the times the polarity values vary between the lexicons, making our method less robust to a change of lexicon.
+\end{enumerate}
+
+However, we already know that this specific method of extracting aspects of a text and the polarities of the aspect is outdated and that the state of art methods clearly outperform the accuracy and correctness of the aspect extraction.
+
+
+% Add a bibliography block to the postdoc
+
+
+
+\end{document}
