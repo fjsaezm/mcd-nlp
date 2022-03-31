@@ -380,7 +380,7 @@
     
     \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
     
-    
+\setcounter{section}{-1} % So the first section is 0
 
 \begin{document}
 
@@ -390,9 +390,28 @@
 
 In this document, we will comment all the tasks and sub tasks that we have coded for this assignment. The most relevant pieces of code and results will be exposed in the following sections.\\
 
-As a note, each section in this document is a task or subtask that \textbf{has been done} for this assignment, and it can be found in the jupyter notebook.
+\section{Tasks accomplished}
 
+We provided a list of all the accomplished tasks:
 
+\begin{itemize}
+    \item \textbf{Task 1.1} - mandatory
+    \item \textbf{Task 1.2} - optional
+    \item \textbf{Task 1.3} - optional
+    \item \textbf{Task 2.1} - mandatory
+    \item \textbf{Task 2.2} - optional
+    \item \textbf{Task 2.3} - optional
+    \item \textbf{Task 3.1} - mandatory
+    \item \textbf{Task 3.2} - optional
+    \item \textbf{Task 3.3} - optional (partially accomplished)
+    \item \textbf{Task 4.1} - mandatory
+    \item \textbf{Task 4.2} - optional
+    \item \textbf{Task 4.3} - optional (partially accomplished)
+    \item \textbf{Task 5.1} - mandatory
+    \item \textbf{Task 5.2} - mandatory
+\end{itemize}
+
+In this document we focus on tasks 4 and onwards, since they are the most interesting ones. The code and examples from previous tasks may be found in the associated notebook. 
 
 \hypertarget{assignment-1}{%
     \section{Assignment 1}\label{assignment-1}}
@@ -518,7 +537,7 @@ and display the result for the first few reviews.
 \textbf{Generating or extending the lists of terms of each aspect with
     synonyms extracted from WordNet.}
 
-For this second task we expand the vocabulty using synonims extracted
+For this second task we expand the vocabulary using synonims extracted
 from Wordnet. The function \texttt{build\_vocab()} is analogous to the
 previous \texttt{build\_simple\_vocab()} but takes this synonims into
 account.
@@ -584,7 +603,15 @@ We decided to load not only Liu's lexicon but also `Vader` lexicon. Also, we use
 
 \textbf{Considering modifiers to adjust the polarity values of the
     aspect opinions in Assignment 4.}
+    
+These are loaded from the provided csv, and used in assginment 4.
 
+\hypertarget{task-3.3-optional}{%
+    \subsection{Task 3.3 (optional)}\label{task-3.3-optional}}
+
+\textbf{Considering negation of opinion words and negation of sentences to adjust the polarity values of the aspect opinions in Assignment 4.}
+    
+This task has been partially accomplished since we have only taken into account negations on verbs (like \emph{isn't} or \emph{didn't}), see the defined grammar below. We could have somply added another negation is a \emph{not} word was present in the sentence, but we felt that some cases didn't fit at all with this implementation, like the common use \emph{noy only [...] but also [...]}.
 
 \hypertarget{assignment-4}{%
     \section{Assignment 4}\label{assignment-4}}
@@ -652,7 +679,7 @@ We define a grammar that tries to capture:
           Noun + Verb + (Adverb) + Adjective
 \end{itemize}
 
-We test in very simple examples.
+In particular, there might be more of each element inthe respective position (i.e., two adjectives, two adeverbs, etc.). We tested this in very simple examples.
 
 \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
     \prompt{In}{incolor}{16}{\boxspacing}
@@ -677,10 +704,6 @@ We test in very simple examples.
 
     Sentence:  The place isn't absolutely perfect
         []
-
-    Sentence:  The pool is great
-        [('pool', 'pool', 'great', 'not negated', '', 3.1)]
-
 \end{Verbatim}
 
 We can appreciate that the grammar is working well in all the proposed
@@ -790,7 +813,8 @@ you are finally proposed the following tasks:
 
 \textbf{Visualizing on screen the aspect opinions (tuples) of a given
     review.}
-
+    
+We developed a function that summarizes (by summing up) all the aspect opinions for a single review, and barplot the results. We display three different graphs for the different lexicons used.
 
 \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
     \prompt{In}{incolor}{20}{\boxspacing}
@@ -826,7 +850,7 @@ Two types of visualizations are proposed.
 The first one follows the previous approach we plot the aspect and
 polarities in a single review. What we do is to \textbf{sum} the
 polarities per aspect in each of the reviews to plot all the extracted
-aspects and polarities for a single hotel, given by its \texttt{isin},
+aspects and polarities for a single hotel, given by its \texttt{asin},
 which is an identifier.
 
 \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
@@ -912,7 +936,7 @@ number of reviews first:
 \begin{Verbatim}[commandchars=\\\{\}]
     Statistics found for hotel: CYMG5AsrhkhUPro2c6NSUA
     Aspect: location
-    Liu  SentiWordNet  Vader
+                        Liu  SentiWordNet  Vader
     single\_positive   1.0         1.000    1.0
     single\_negative   0.0         0.000    0.0
     total\_positive    2.0         1.000    2.0
@@ -921,7 +945,7 @@ number of reviews first:
     average\_negative  0.0         0.000    0.0
 
     Aspect: bedrooms
-    Liu  SentiWordNet  Vader
+                        Liu  SentiWordNet  Vader
     single\_positive   0.0          0.00    0.0
     single\_negative   1.0          1.00    1.0
     total\_positive    0.0          0.00    0.0
@@ -930,7 +954,7 @@ number of reviews first:
     average\_negative -1.0         -0.75   -0.4
 
     Aspect: service
-    Liu  SentiWordNet  Vader
+                        Liu  SentiWordNet  Vader
     single\_positive   0.0         0.000    0.0
     single\_negative   1.0         1.000    1.0
     total\_positive    0.0         0.000    0.0
@@ -957,7 +981,7 @@ In the first case analyzed before, we obtain the following result:
 \begin{Verbatim}[commandchars=\\\{\}]
     Statistics found for hotel: EcHuaHD9IcoPEWNsU8vDTw
     Aspect: location
-    Liu  SentiWordNet      Vader
+                        Liu  SentiWordNet      Vader
     single\_positive   36.000000     29.000000  33.000000
     single\_negative    3.000000      4.000000   3.000000
     total\_positive    65.000000     53.000000  57.000000
@@ -966,7 +990,7 @@ In the first case analyzed before, we obtain the following result:
     average\_negative  -1.000000     -0.600000  -2.000000
 
     Aspect: bedrooms
-    Liu  SentiWordNet      Vader
+                        Liu  SentiWordNet      Vader
     single\_positive   20.000000     15.000000  13.000000
     single\_negative    1.000000     12.000000   1.000000
     total\_positive    23.000000     15.000000  14.000000
@@ -975,7 +999,7 @@ In the first case analyzed before, we obtain the following result:
     average\_negative  -1.000000     -0.541667  -2.300000
 
     Aspect: service
-    Liu  SentiWordNet      Vader
+                        Liu  SentiWordNet      Vader
     single\_positive   16.000000      10.00000  12.000000
     single\_negative    4.000000       4.00000   2.000000
     total\_positive    37.000000      25.00000  23.000000
@@ -994,11 +1018,5 @@ After all this work, a few conclusions have been extracted:
     \item Also, the final polarity value depends on the used lexicon. Although sometimes the values are coincident, most of the times the polarity values vary between the lexicons, making our method less robust to a change of lexicon.
 \end{enumerate}
 
-However, we already know that this specific method of extracting aspects of a text and the polarities of the aspect is outdated and that the state of art methods clearly outperform the accuracy and correctness of the aspect extraction.
-
-
-% Add a bibliography block to the postdoc
-
-
-
+In order to outperform our imlpementation we could tackle either one of the previously mentioned points, or change our point of view and approach this problem using advanced state-of-the-art techniques, such as BERT, as done in \href{https://arxiv.org/abs/2010.11731}{this work}.
 \end{document}
